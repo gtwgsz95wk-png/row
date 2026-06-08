@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#050506">
 <meta name="color-scheme" content="dark">
-<title>Täglicher Stack — Anpassbare Vorlage</title>
+<title>Daily Stack — Customizable Template</title>
 <script src="topbar.js" defer></script>
 <style>
 :root {
@@ -453,21 +453,21 @@ main {
 <body>
 
 <main>
-  <div class="section-title">Täglicher Stack</div>
+  <div class="section-title">Daily Stack</div>
 
   <div class="stack-card">
     <div class="stack-ticker" id="stackTicker">
       <span class="stack-ticker-dot"></span>
       <span class="stack-ticker-label">STACK</span>
       <span class="stack-ticker-sep">·</span>
-      <span class="stack-ticker-msg" id="stackTickerMsg">Alles erledigt — weiter so</span>
+      <span class="stack-ticker-msg" id="stackTickerMsg">All caught up — keep it rolling</span>
       <span class="stack-ticker-count" id="stackTickerCount">0/0</span>
     </div>
 
     <div class="stack-head">
-      <div class="sf-eyebrow">Täglicher Stack</div>
-      <div class="sf-title">Antippen, wenn du es nimmst</div>
-      <div class="stack-progress-text" id="stackProgressText">— / — heute genommen · Reset um 6 Uhr</div>
+      <div class="sf-eyebrow">Daily stack</div>
+      <div class="sf-title">Tap each as you take it</div>
+      <div class="stack-progress-text" id="stackProgressText">— / — taken today · resets at 6 AM</div>
     </div>
 
     <div class="stack-progress-track">
@@ -477,25 +477,25 @@ main {
     <div id="stackGroups"></div>
 
     <div class="stack-add-wrap">
-      <div class="sf-eyebrow stack-add-label">Zum Stack hinzufügen</div>
+      <div class="sf-eyebrow stack-add-label">Add to stack</div>
       <div class="stack-add-row">
         <div class="stack-name-wrap">
-          <input id="stackAddName" type="text" placeholder="Name (z.B. B-Komplex)" class="stack-input" autocomplete="off" spellcheck="false" />
+          <input id="stackAddName" type="text" placeholder="Name (e.g. B-complex)" class="stack-input" autocomplete="off" spellcheck="false" />
           <div id="stackSearchResults" class="stack-search-results" hidden></div>
         </div>
-        <input id="stackAddDose" type="text" placeholder="Dosis (z.B. 1 Kap.)" class="stack-input" />
+        <input id="stackAddDose" type="text" placeholder="Dose (e.g. 1 cap)" class="stack-input" />
         <select id="stackAddWindow" class="stack-input stack-select">
-          <option value="morning">Morgens</option>
-          <option value="lunch">Mittags</option>
-          <option value="evening">Abends</option>
-          <option value="anytime">Jederzeit</option>
+          <option value="morning">Morning</option>
+          <option value="lunch">Lunch</option>
+          <option value="evening">Evening</option>
+          <option value="anytime">Anytime</option>
         </select>
-        <button id="stackAddBtn" class="stack-add-btn">+ Hinzufügen</button>
+        <button id="stackAddBtn" class="stack-add-btn">+ Add</button>
       </div>
     </div>
   </div>
 
-  <div class="attribution">// anpassbare Vorlage · alle Daten bleiben in deinem Browser</div>
+  <div class="attribution">// editable template · all data stays in your browser</div>
 </main>
 
 <script>
@@ -528,10 +528,10 @@ main {
   ];
 
   const STACK_WINDOWS = [
-    { key: 'morning', icon: '🌅', title: 'Morgens',   time: '7–10 Uhr',  cutoffHour: 10 },
-    { key: 'lunch',   icon: '🍽️', title: 'Mittags',   time: '12–14 Uhr', cutoffHour: 14 },
-    { key: 'evening', icon: '🌙', title: 'Abends',    time: '21–23 Uhr', cutoffHour: 23 },
-    { key: 'anytime', icon: '⏱️', title: 'Jederzeit', time: 'Kein festes Fenster', cutoffHour: null },
+    { key: 'morning', icon: '🌅', title: 'Morning', time: '7–10 AM', cutoffHour: 10 },
+    { key: 'lunch',   icon: '🍽️', title: 'Lunch',   time: '12–2 PM', cutoffHour: 14 },
+    { key: 'evening', icon: '🌙', title: 'Evening', time: '9–11 PM', cutoffHour: 23 },
+    { key: 'anytime', icon: '⏱️', title: 'Anytime', time: 'No fixed window', cutoffHour: null },
   ];
 
   // ====== SUPPLEMENT DATABASE — researched defaults ======
@@ -680,7 +680,7 @@ main {
     const totalCount = items.length;
     const takenCount = items.filter(i => taken[i.id]).length;
     document.getElementById('stackProgressText').textContent =
-      `${takenCount} / ${totalCount} heute genommen · Reset um 6 Uhr`;
+      `${takenCount} / ${totalCount} taken today · resets at 6 AM`;
     const pct = totalCount === 0 ? 0 : (takenCount / totalCount) * 100;
     document.getElementById('stackProgressBar').style.width = pct + '%';
 
@@ -718,15 +718,15 @@ main {
         else if (item.tag === 'not-ordered') tagHtml = '<span class="stack-item-tag tag-not-ordered">not ordered</span>';
 
         row.innerHTML = `
-          <button class="stack-check ${isTaken ? 'checked' : ''}" data-action="toggle" data-id="${item.id}" aria-label="Als genommen markieren">${isTaken ? '✓' : ''}</button>
+          <button class="stack-check ${isTaken ? 'checked' : ''}" data-action="toggle" data-id="${item.id}" aria-label="Mark taken">${isTaken ? '✓' : ''}</button>
           <div class="stack-item-body">
             <div class="stack-item-name" data-edit="name" data-id="${item.id}">
               <span class="stack-item-name-text">${escapeHtml(item.name)}</span>${tagHtml}
             </div>
             <div class="stack-item-meta" data-edit="meta" data-id="${item.id}">${escapeHtml(metaText(item))}</div>
           </div>
-          <button class="stack-low-btn ${isLow ? 'is-low' : ''}" data-action="low" data-id="${item.id}">↓ Wird knapp</button>
-          <button class="stack-item-del" data-action="del" data-id="${item.id}" aria-label="Löschen">×</button>`;
+          <button class="stack-low-btn ${isLow ? 'is-low' : ''}" data-action="low" data-id="${item.id}">↓ Running low</button>
+          <button class="stack-item-del" data-action="del" data-id="${item.id}" aria-label="Delete">×</button>`;
 
         group.appendChild(row);
       });
@@ -735,7 +735,7 @@ main {
     });
 
     if (groupsEl.children.length === 0) {
-      groupsEl.innerHTML = `<div class="stack-window-empty">Noch keine Einträge — füge unten einen hinzu.</div>`;
+      groupsEl.innerHTML = `<div class="stack-window-empty">No items yet — add one below to start your stack.</div>`;
     }
 
     // Sync ticker after every render
@@ -764,13 +764,13 @@ main {
       if (isPastCutoff && !isTaken) {
         missed.push({
           type: 'missed',
-          text: `${item.name} — ${win.title.toLowerCase()} Dosis vergessen`
+          text: `${item.name} — missed ${win.title.toLowerCase()} dose`
         });
       }
       if (low.includes(item.id)) {
         lowList.push({
           type: 'low',
-          text: `${item.name} — wird knapp, bald nachbestellen`
+          text: `${item.name} — running low, reorder soon`
         });
       }
     });
@@ -788,7 +788,7 @@ main {
     cachedIssues = issues;
 
     if (issues.length === 0) {
-      msgEl.textContent = 'Alles erledigt — weiter so';
+      msgEl.textContent = 'All caught up — keep it rolling';
       tickerEl.classList.remove('status-low', 'status-missed');
       countEl.textContent = `0/${totalItems}`;
       tickerIndex = 0;
