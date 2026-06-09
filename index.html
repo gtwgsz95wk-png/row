@@ -634,7 +634,7 @@ body::after {
     <div class="day-ring-text">
       <div class="day-ring-status"    id="dayRingStatus">Loading…</div>
       <div class="day-ring-remaining" id="dayRingRemaining">—</div>
-      <div class="day-ring-hours">8:00 AM – 12:00 AM</div>
+      <div class="day-ring-hours">6:00 AM – 10:00 PM</div>
     </div>
   </div>
 
@@ -699,8 +699,8 @@ body::after {
   // Paste your Anthropic key here to enable ✨ Polish. Empty = falls back to plain add.
   const ANTHROPIC_API_KEY = '';
 
-  const WAKE_HOUR  = 8;
-  const SLEEP_HOUR = 24;
+  const WAKE_HOUR  = 6;
+  const SLEEP_HOUR = 22;
 
   // ---------- storage helpers ----------
   function storeGet(key) {
@@ -941,12 +941,13 @@ body::after {
     }
 
     if (hours >= SLEEP_HOUR) {
-      fillEl.setAttribute('stroke-dashoffset', 0);
-      fillEl.style.stroke = '#E25D7A';
-      percentEl.textContent = '100%';
-      phaseEl.textContent   = 'PAST BEDTIME';
-      statusEl.textContent  = '⚠️ Past bedtime';
-      remainingEl.textContent = 'Sleep!';
+      fillEl.setAttribute('stroke-dashoffset', C);
+      fillEl.style.stroke = '#4D4B47';
+      percentEl.textContent = '—';
+      phaseEl.textContent   = 'SLEEPING';
+      statusEl.textContent  = '😴 Still sleeping';
+      const minsUntil = (24 - hours + WAKE_HOUR) * 60;
+      remainingEl.textContent = formatRemaining(minsUntil) + ' until wake-up';
       return;
     }
 
